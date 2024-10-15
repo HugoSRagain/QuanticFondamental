@@ -1,0 +1,81 @@
+# Install necessary packages if not already installed
+if (!require("plotly")) install.packages("plotly")
+if (!require("expm")) install.packages("expm")
+
+# Load the libraries
+library(plotly)
+library(expm)
+
+# Define the simulation parameters
+T <- 20  # Total duration of the simulation
+dt <- 0.1  # Time step
+n_steps <- T / dt  # Total number of steps
+time_array <- seq(0, T - dt, by = dt)  # Adjusted to match n_steps length
+
+# Pauli matrices for public and private financing dynamics
+sigma_x <- matrix(c(0, 1, 0, 1, 0, 0, 0, 0, 0), nrow = 3, byrow = TRUE)
+sigma_y <- matrix(c(0, -1i, 0, 1i, 0, 0, 0, 0, 0), nrow = 3, byrow = TRUE)
+sigma_z <- matrix(c(1, 0, 0, 0, -1, 0, 0, 0, 0), nrow = 3, byrow = TRUE)
+
+# Hamiltonian parameters
+H_public <- 0.5 * sigma_x  # Influence of public financing
+H_private <- 0.3 * sigma_y  # Influence of private financing
+H_interaction <- 0.4 * sigma_z  # Interaction between public and private financing
+noise_strength <- 0.05  # External stochastic influence
+
+# Dynamic adjustment factor towards a target state
+lambda_adjustment <- 0.1
+psi_target <- c(0.8, 0.6, 0.2)  # Target state
+
+# Initial state in balanced superposition in three dimensions
+psi_0 <- (1/sqrt(3)) * c(1, 1, 1)
+
+# Initialize trajectories
+trajectory_public <- numeric(n_steps)
+trajectory_private <- numeric(n_steps)
+
+# Initial state
+psi <- psi_0
+
+# Temporal evolution simulation
+for (t in 1:n_steps) {
+  # Generate random external shock
+  random_noise <- noise_strength * rnorm(1) * sigma_z
+  
+  # Total Hamiltonian with noise
+  H_total <- H_public + H_private + H_interaction + random_noise
+  
+  # Unitary evolution operator
+  U <- expm(-1i * H_total * dt)
+  
+  # Update the state
+  psi <- U %*% psi
+  
+  # Adjustment towards the target state
+  psi <- psi + lambda_adjustment * (psi_target - psi)
+  
+  # Normalize the state
+  psi <- psi / sqrt(sum(Mod(psi)^2))
+  
+  # Store values
+  trajectory_public[t] <- Re(psi[1])  # Public financing
+  trajectory_private[t] <- Re(psi[2]) # Private financing
+}
+
+# Create a dataframe for visualization
+df <- data.frame(
+  Time = time_array,
+  Public_Financing = trajectory_public,
+  Private_Financing = trajectory_private
+)
+
+# Interactive visualization with Plotly
+plot_ly(df, x = ~Time, y = ~Public_Financing, z = ~Private_Financing, 
+        type = 'scatter3d', mode = 'lines',
+        line = list(width = 6, color = ~Time, colorscale = 'Viridis')) %>%
+  layout(title = "3D Evolution of Public and Private Financing Needs",
+         scene = list(
+           xaxis = list(title = "Time"),
+           yaxis = list(title = "Public Financing"),
+           zaxis = list(title = "Private Financing")
+         ))
