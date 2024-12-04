@@ -1,0 +1,69 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Configuration du temps
+time = np.linspace(0, 10, 500)
+
+# Fréquences variables pour chaque onde
+frequency_alpha_1 = 1 + 0.1 * np.sin(0.5 * time)  # Variable frequency
+frequency_alpha_2 = 0.8 + 0.1 * np.sin(0.5 * time)  # Variable frequency
+frequency_alpha_3 = 1.2 + 0.1 * np.sin(0.5 * time)  # Variable frequency
+
+frequency_beta_1 = 1 + 0.1 * np.cos(0.5 * time)  # Variable frequency
+frequency_beta_2 = 0.8 + 0.1 * np.cos(0.5 * time)  # Variable frequency
+frequency_beta_3 = 1.2 + 0.1 * np.cos(0.5 * time)  # Variable frequency
+
+# Calcul des longueurs d'onde variables
+wavelength_alpha_1 = 2 * np.pi / frequency_alpha_1
+wavelength_alpha_2 = 2 * np.pi / frequency_alpha_2
+wavelength_alpha_3 = 2 * np.pi / frequency_alpha_3
+
+wavelength_beta_1 = 2 * np.pi / frequency_beta_1
+wavelength_beta_2 = 2 * np.pi / frequency_beta_2
+wavelength_beta_3 = 2 * np.pi / frequency_beta_3
+
+# Création des sous-graphes
+fig, axs = plt.subplots(3, 2, figsize=(12, 15))
+
+# Tracé des graphiques avec des couleurs modifiées
+axs[0, 0].plot(time, wavelength_alpha_1, label="Wavelength Variation for alpha_1", color='purple')
+axs[0, 0].set_title("Wavelength Variation for alpha_1")
+axs[0, 0].set_xlabel("Time (t)")
+axs[0, 0].set_ylabel("Wavelength (λ)")
+axs[0, 0].grid(True)
+
+axs[0, 1].plot(time, wavelength_alpha_2, label="Wavelength Variation for alpha_2", color='orange')
+axs[0, 1].set_title("Wavelength Variation for alpha_2")
+axs[0, 1].set_xlabel("Time (t)")
+axs[0, 1].set_ylabel("Wavelength (λ)")
+axs[0, 1].grid(True)
+
+axs[1, 0].plot(time, wavelength_alpha_3, label="Wavelength Variation for alpha_3", color='red')
+axs[1, 0].set_title("Wavelength Variation for alpha_3")
+axs[1, 0].set_xlabel("Time (t)")
+axs[1, 0].set_ylabel("Wavelength (λ)")
+axs[1, 0].grid(True)
+
+axs[1, 1].plot(time, wavelength_beta_1, label="Wavelength Variation for beta_1", color='blue')
+axs[1, 1].set_title("Wavelength Variation for beta_1")
+axs[1, 1].set_xlabel("Time (t)")
+axs[1, 1].set_ylabel("Wavelength (λ)")
+axs[1, 1].grid(True)
+
+axs[2, 0].plot(time, wavelength_beta_2, label="Wavelength Variation for beta_2", color='green')
+axs[2, 0].set_title("Wavelength Variation for beta_2")
+axs[2, 0].set_xlabel("Time (t)")
+axs[2, 0].set_ylabel("Wavelength (λ)")
+axs[2, 0].grid(True)
+
+axs[2, 1].plot(time, wavelength_beta_3, label="Wavelength Variation for beta_3", color='brown')
+axs[2, 1].set_title("Wavelength Variation for beta_3")
+axs[2, 1].set_xlabel("Time (t)")
+axs[2, 1].set_ylabel("Wavelength (λ)")
+axs[2, 1].grid(True)
+
+# Ajustement de l'espacement
+plt.tight_layout()
+
+# Affichage des graphiques
+plt.show()
