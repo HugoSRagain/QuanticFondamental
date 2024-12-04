@@ -1,0 +1,69 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Configuration du temps
+time = np.linspace(0, 10, 500)
+
+# Superposition de plusieurs états financiers
+alpha_1 = np.cos(time)  # Amplitude du financement public état 1
+alpha_2 = np.cos(0.8 * time + 0.5)  # Amplitude état 2
+alpha_3 = np.cos(1.2 * time + 1.0)  # Amplitude état 3
+
+beta_1 = np.sin(time)   # Amplitude de l'investissement privé état 1
+beta_2 = np.sin(0.8 * time + 0.5)  # Amplitude état 2
+beta_3 = np.sin(1.2 * time + 1.0)  # Amplitude état 3
+
+# Calcul des dérivées des courbes
+d_alpha_1 = -2 * np.cos(time) * np.sin(time)  # Dérivée de |α₁(t)|²
+d_alpha_2 = -1.6 * np.cos(0.8 * time + 0.5) * np.sin(0.8 * time + 0.5)  # Dérivée de |α₂(t)|²
+d_alpha_3 = -2.4 * np.cos(1.2 * time + 1.0) * np.sin(1.2 * time + 1.0)  # Dérivée de |α₃(t)|²
+
+d_beta_1 = 2 * np.sin(time) * np.cos(time)  # Dérivée de |β₁(t)|²
+d_beta_2 = 1.6 * np.sin(0.8 * time + 0.5) * np.cos(0.8 * time + 0.5)  # Dérivée de |β₂(t)|²
+d_beta_3 = 2.4 * np.sin(1.2 * time + 1.0) * np.cos(1.2 * time + 1.0)  # Dérivée de |β₃(t)|²
+
+# Création de la figure
+fig, axs = plt.subplots(3, 2, figsize=(16, 15))
+
+# Tracés des dérivées dans chaque sous-graphique
+axs[0, 0].plot(time, d_alpha_1, label="d|α₁(t)|²/dt", color='blue')
+axs[0, 0].set_title('Derivative of Public Funding |α₁(t)|²')
+axs[0, 0].set_xlabel('Time (t)')
+axs[0, 0].set_ylabel('Derivative')
+axs[0, 0].grid(True)
+
+axs[0, 1].plot(time, d_alpha_2, label="d|α₂(t)|²/dt", color='orange')
+axs[0, 1].set_title('Derivative of Public Funding |α₂(t)|²')
+axs[0, 1].set_xlabel('Time (t)')
+axs[0, 1].set_ylabel('Derivative')
+axs[0, 1].grid(True)
+
+axs[1, 0].plot(time, d_alpha_3, label="d|α₃(t)|²/dt", color='red')
+axs[1, 0].set_title('Derivative of Public Funding |α₃(t)|²')
+axs[1, 0].set_xlabel('Time (t)')
+axs[1, 0].set_ylabel('Derivative')
+axs[1, 0].grid(True)
+
+axs[1, 1].plot(time, d_beta_1, label="d|β₁(t)|²/dt", color='green')
+axs[1, 1].set_title('Derivative of Private Investment |β₁(t)|²')
+axs[1, 1].set_xlabel('Time (t)')
+axs[1, 1].set_ylabel('Derivative')
+axs[1, 1].grid(True)
+
+axs[2, 0].plot(time, d_beta_2, label="d|β₂(t)|²/dt", color='purple')
+axs[2, 0].set_title('Derivative of Private Investment |β₂(t)|²')
+axs[2, 0].set_xlabel('Time (t)')
+axs[2, 0].set_ylabel('Derivative')
+axs[2, 0].grid(True)
+
+axs[2, 1].plot(time, d_beta_3, label="d|β₃(t)|²/dt", color='brown')
+axs[2, 1].set_title('Derivative of Private Investment |β₃(t)|²')
+axs[2, 1].set_xlabel('Time (t)')
+axs[2, 1].set_ylabel('Derivative')
+axs[2, 1].grid(True)
+
+# Ajuster l'espacement entre les graphiques
+plt.tight_layout()
+
+# Affichage des graphiques
+plt.show()
